@@ -42,3 +42,4 @@ Afterward, we will select the size as 10Gib and the availability zone to be the 
 Now, we will select our newly created volume in the list of created volumes and click on the "Actions" menu and afterward "Attach Volume"
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2000.25.38.png)
 After clicking on the above, it leads us to the page in the image below where we select the instance we want to attach the volume to and click on the "attach volume" icon button.
+![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2000.28.46.png)
