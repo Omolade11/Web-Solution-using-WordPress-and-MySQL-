@@ -28,10 +28,10 @@ We'll be using RedHat OS for this project In previous projects we used `Ubuntu`,
 
 ## LAUNCH AN EC2 INSTANCE THAT WILL SERVE AS “WEB SERVER”.
 ### Step 1 — Prepare a Web Server
-We will launch an EC2 instance that will serve as "Web Server". We will create 3 volumes in the same AZ as your Web Server EC2, each of 10 GiB.
+We will launch an EC2 instance that will serve as "Web Server". We will create 3 volumes in the same AZ as our Web Server EC2, each of 10 GiB.
 We can learn how to add EBS volume to an EC2 instance [here](https://www.youtube.com/watch?v=HPXnXkBzIHw).
 
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-22%20at%2023.24.47.png)
-Our instance was created in "us-east-1e" availability zone as we can see in the image below, afterward, we will click on `volumes` highlighted in orange on the left.
-
-
+Our instance was created in "us-east-1e" availability zone as we can see in the image below, afterward, we will click on `volumes` highlighted in orange under the elastic block store on the left.
+![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-22%20at%2023.49.55.png)
+Remember, we will be creating 3 volumes in the same AZ as our Web Server EC2 i.e us-east-1e each of 10 GiB.
