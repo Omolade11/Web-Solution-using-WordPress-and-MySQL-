@@ -35,3 +35,5 @@ We can learn how to add EBS volume to an EC2 instance [here](https://www.youtube
 Our instance was created in "us-east-1e" availability zone as we can see in the image below, afterward, we will click on `volumes` highlighted in orange under the elastic block store on the left.
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-22%20at%2023.49.55.png)
 Remember, we will be creating 3 volumes in the same AZ as our Web Server EC2 i.e us-east-1e each of 10 GiB.
+To do this, click on "Create Volume"
+![]()
