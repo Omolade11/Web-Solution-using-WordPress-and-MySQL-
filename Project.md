@@ -31,5 +31,6 @@ We'll be using RedHat OS for this project In previous projects we used `Ubuntu`,
 We will launch an EC2 instance that will serve as "Web Server". We will create 3 volumes in the same AZ as your Web Server EC2, each of 10 GiB.
 We can learn how to add EBS volume to an EC2 instance [here](https://www.youtube.com/watch?v=HPXnXkBzIHw).
 
+[](Images/Screenshot 2023-02-22 at 23.24.47.png)
 
 
