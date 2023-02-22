@@ -21,7 +21,7 @@ We will be working with several storage and disk management concepts.
 
 Our 3-Tier Setup
 1. A Laptop or PC to serve as a client
-2. An EC2 Linux Server as a web server (This is where you will install WordPress)
+2. An EC2 Linux Server as a web server (This is where we will install WordPress)
 3. An EC2 Linux server as a database (DB) server
 
 We'll be using RedHat OS for this project In previous projects we used `Ubuntu`, but it is better to be well-versed with various Linux distributions, thus, for this projects we will use very popular distribution called `RedHat` (it also has a fully compatible derivative – CentOS) Note: for Ubuntu server, when connecting to it via SSH/Putty or any other tool, we used ubuntu user, but for RedHat you will need to use ec2-user user. Connection string will look like `ec2-user@<Public-IP>`.
