@@ -131,6 +131,7 @@ UUID=08274569-5e48-4549-af7d-040b1dafbec2 /var/log       ext4 defaults 0 0
 
 ```
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2016.16.07.png)
+
 To edit, press i and to exit press esc and type :wq
 
 22. Test the configuration and reload the daemon
