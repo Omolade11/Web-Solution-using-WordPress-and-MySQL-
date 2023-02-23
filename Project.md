@@ -56,6 +56,21 @@ when promted for an input enter `n`, then press enter button 4 times for defualt
 
 We will repeat this step for xvdg and xvdh.
 5. Now, we will use `lsblk` utility to view the newly configured partition on each of the 3 disks.The image below is the result.
+![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2014.11.23.png)
+6. Install lvm2 package using `sudo yum install lvm2`. We will then run `sudo lvmdiskscan` command to check for available partitions
+7. We will use pvcreate utility to mark each of 3 disks as physical volumes (PVs) to be used by LVM by running the following:
+```
+sudo pvcreate /dev/xvdf1
+sudo pvcreate /dev/xvdg1
+sudo pvcreate /dev/xvdh1
+```
+8. We will verify that our Physical volume has been created successfully by running `sudo pvs`
+9. Use vgcreate utility to add all 3 PVs to a volume group (VG). We will mame the volume group "webdata-vg"
+
+` sudo vgcreate webdata-vg /dev/xvdh1 /dev/xvdg1 /dev/xvdf1 `
+
+10. Verify that our VG has been created successfully by running `sudo vgs`
+
 ![]()
 
 
