@@ -46,17 +46,21 @@ After clicking on the above, it leads us to the page in the image below where we
 We will follow this process to create and attach two more volumes.
 
 2. We will ssh into the instance to begin configuration
+
 3. We will use `lsblk` command to inspect what block devices are attached to the server. Notice names of our newly created devices. All devices in Linux reside in `/dev/` directory. We will inspect it with `ls /dev/` and make sure we see all 3 newly created block devices there – their names will likely be xvdf, xvdg, xvdh.
+
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2013.03.24.png)
+
 4. We will use gdisk utility to create a single partition on each of the 3 disks. For example, for xvdf we will run the following: 
 `sudo gdisk /dev/xvdf`
 
-when promted for an input enter `n`, then press enter button 4 times for defualt settings. Afterward, enter `p` and press enter. Enter `w` and press enter and finally, enter `y` and press enter. The image below shows how we did it.
+when promted for an input enter `n`, then press enter button 4 times for defualt settings. Afterward, enter `p` and press enter. Enter `w` and press enter and finally, enter `y` and press enter. The image below shows how we did it. We will repeat this step for xvdg and xvdh.
+
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2013.15.37.png)
 
-We will repeat this step for xvdg and xvdh.
 5. Now, we will use `lsblk` utility to view the newly configured partition on each of the 3 disks.The image below is the result.
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2014.11.23.png)
+
 6. Install lvm2 package using `sudo yum install lvm2`. We will then run `sudo lvmdiskscan` command to check for available partitions
 7. We will use pvcreate utility to mark each of 3 disks as physical volumes (PVs) to be used by LVM by running the following:
 ```
@@ -70,9 +74,24 @@ sudo pvcreate /dev/xvdh1
 ` sudo vgcreate webdata-vg /dev/xvdh1 /dev/xvdg1 /dev/xvdf1 `
 
 10. Verify that our VG has been created successfully by running `sudo vgs`
-
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2014.25.03.png)
 
+11. We will use lvcreate utility to create 2 logical volumes. `apps-lv` (Use half of the PV size), and `logs-lv` (Use the remaining space of the PV(Physical Volume) size). NOTE: apps-lv will be used to store data for the Website while, logs-lv will be used to store data for logs.
+``` 
+sudo lvcreate -n apps-lv -L 14G webdata-vg
+sudo lvcreate -n logs-lv -L 14G webdata-vg
+
+```
+12. We will verify that our Logical Volume has been created successfully by running `sudo lvs`
+
+13. Verify the entire setup by running:
+
+```
+sudo vgdisplay -v #view complete setup - VG, PV, and LV
+sudo lsblk 
+```
+The result of the latter command should look like this
+![]()
 
 
 
