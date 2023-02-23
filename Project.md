@@ -28,7 +28,7 @@ We'll be using RedHat OS for this project In previous projects we used `Ubuntu`,
 
 ## LAUNCH AN EC2 INSTANCE THAT WILL SERVE AS “WEB SERVER”.
 ### Step 1 — Prepare a Web Server
-We will launch an EC2 instance that will serve as "Web Server". We will create 3 volumes in the same AZ as our Web Server EC2, each of 10 GiB.
+1. We will launch an EC2 instance that will serve as "Web Server". We will create 3 volumes in the same AZ as our Web Server EC2, each of 10 GiB.
 We can learn how to add EBS volume to an EC2 instance [here](https://www.youtube.com/watch?v=HPXnXkBzIHw).
 
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-22%20at%2023.24.47.png)
@@ -44,3 +44,6 @@ Now, we will select our newly created volume in the list of created volumes and 
 After clicking on the above, it leads us to the page in the image below where we select the instance we want to attach the volume to and click on the "attach volume" icon button.
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2000.28.46.png)
 We will follow this process to create and attach two more volumes.
+
+2. We will open up the instance terminal to begin configuration
+3. 
