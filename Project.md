@@ -91,7 +91,57 @@ sudo vgdisplay -v #view complete setup - VG, PV, and LV
 sudo lsblk 
 ```
 The result of the latter command should look like this
-![]()
+![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2014.47.15.png)
 
+14. Use mkfs.ext4 to format the logical volumes with [ext4](https://en.wikipedia.org/wiki/Ext4) filesystem
+```
+sudo mkfs -t ext4 /dev/webdata-vg/apps-lv
+sudo mkfs -t ext4 /dev/webdata-vg/logs-lv
+```
+15. We will create `/var/www/html` directory to store website files
+`sudo mkdir -p /var/www/html`
 
+16. Then, we will create /home/recovery/logs to store backup of log data
+`sudo mkdir -p /home/recovery/logs`
+
+17. Mount /var/www/html on apps-lv logical volume
+`sudo mount /dev/webdata-vg/apps-lv /var/www/html/`
+
+18. Use rsync utility to back up all the files in the log directory /var/log into /home/recovery/logs (This is required before mounting the file system)
+`sudo rsync -av /var/log/. /home/recovery/logs/`
+
+19. Mount /var/log on logs-lv logical volume. (Note that all the existing data on /var/log will be deleted. That is why step 15 above is very
+important)
+`sudo mount /dev/webdata-vg/logs-lv /var/log`
+
+20. Restore log files back into /var/log directory
+`sudo rsync -av /home/recovery/logs/. /var/log`
+
+21. We will update `/etc/fstab` file so that the mount configuration will persist after the restart of the server.
+The UUID of the device will be used to update the /etc/fstab file;
+`sudo blkid`
+![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2015.19.11.png)
+From the image above, the UUID value of vg-apps and vg-logs can be seen.
+`sudo vi /etc/fstab`
+
+``` 
+# mount for wordpress webserver
+UUID=078697ff-962b-4411-90ef-56eb986a7956 /var/www/html  ext4 defaults 0 0
+UUID=08274569-5e48-4549-af7d-040b1dafbec2 /var/log       ext4 defaults 0 0
+
+```
+![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2016.16.07.png)
+To edit, press i and to exit press esc and type :wq
+
+22. Test the configuration and reload the daemon
+```
+sudo mount -a 
+sudo systemctl daemon-reload
+
+```
+
+23. We will verify our setup by running `df -h` the output must look like this: 
+![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2016.27.02.png)
+
+### Step 2 — Prepare the Database Server
 
