@@ -71,7 +71,7 @@ sudo pvcreate /dev/xvdh1
 
 10. Verify that our VG has been created successfully by running `sudo vgs`
 
-![]()
+![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2014.25.03.png)
 
 
 
