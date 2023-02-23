@@ -45,5 +45,7 @@ After clicking on the above, it leads us to the page in the image below where we
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2000.28.46.png)
 We will follow this process to create and attach two more volumes.
 
-2. We will open up the instance terminal to begin configuration
-3. 
+2. We will ssh into the instance to begin configuration
+3. We will use `lsblk` command to inspect what block devices are attached to the server. Notice names of our newly created devices. All devices in Linux reside in `/dev/` directory. We will inspect it with `ls /dev/` and make sure we see all 3 newly created block devices there – their names will likely be xvdf, xvdh, xvdg.
+![]()
+
