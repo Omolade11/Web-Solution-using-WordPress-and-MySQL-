@@ -46,11 +46,18 @@ After clicking on the above, it leads us to the page in the image below where we
 We will follow this process to create and attach two more volumes.
 
 2. We will ssh into the instance to begin configuration
-3. We will use `lsblk` command to inspect what block devices are attached to the server. Notice names of our newly created devices. All devices in Linux reside in `/dev/` directory. We will inspect it with `ls /dev/` and make sure we see all 3 newly created block devices there – their names will likely be xvdf, xvdh, xvdg.
+3. We will use `lsblk` command to inspect what block devices are attached to the server. Notice names of our newly created devices. All devices in Linux reside in `/dev/` directory. We will inspect it with `ls /dev/` and make sure we see all 3 newly created block devices there – their names will likely be xvdf, xvdg, xvdh.
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2013.03.24.png)
 4. We will use gdisk utility to create a single partition on each of the 3 disks. For example, for xvdf we will run the following: 
 `sudo gdisk /dev/xvdf`
 
 when promted for an input enter `n`, then press enter button 4 times for defualt settings. Afterward, enter `p` and press enter. Enter `w` and press enter and finally, enter `y` and press enter. The image below shows how we did it.
+![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2013.15.37.png)
+
+We will repeat this step for xvdg and xvdh.
+5. Now, we will use `lsblk` utility to view the newly configured partition on each of the 3 disks.The image below is the result.
+![]()
+
+
 
 
