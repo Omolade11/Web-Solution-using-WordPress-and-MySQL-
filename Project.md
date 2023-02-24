@@ -28,7 +28,7 @@ We'll be using RedHat OS for this project In previous projects we used `Ubuntu`,
 
 ## LAUNCH AN EC2 INSTANCE THAT WILL SERVE AS “WEB SERVER”.
 ### Step 1 — Prepare a Web Server
-1. We will launch an EC2 instance that will serve as "Web Server". We will create 3 volumes in the same AZ as our Web Server EC2, each of 10 GiB.
+1. We will launch an EC2 instance that will serve as "Web Server". We will create 3 volumes in the same AZ as our Web Server EC2, each of 10 GiB and attach them to the instance.
 We can learn how to add EBS volume to an EC2 instance [here](https://www.youtube.com/watch?v=HPXnXkBzIHw).
 
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-22%20at%2023.24.47.png)
@@ -145,4 +145,11 @@ sudo systemctl daemon-reload
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2016.27.02.png)
 
 ### Step 2 — Prepare the Database Server
+We will launch a second RedHat EC2 instance that will serve as – ‘DB Server’ Repeat the same steps as for the Web Server, but instead of `apps-lv`, we will create `db-lv` and mount it to `/db` directory instead of `/var/www/html/`.
+1. We will launch an EC2 instance that will serve as "DB Server". We will create 3 volumes in the same AZ as our Web Server EC2, each of 10 GiB and attach them to the instance.
+
+2. We will ssh into the instance to begin configuration
+
+3. We will use `lsblk` command to inspect what block devices are attached to the server. Notice names of our newly created devices. All devices in Linux reside in `/dev/` directory. We will inspect it with `ls /dev/` and make sure we see all 3 newly created block devices there – their names will likely be xvdf, xvdg, xvdh.
+
 
