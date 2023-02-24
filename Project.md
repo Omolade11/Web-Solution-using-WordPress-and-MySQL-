@@ -91,6 +91,7 @@ sudo vgdisplay -v #view complete setup - VG, PV, and LV
 sudo lsblk 
 ```
 The result of the latter command should look like this
+
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2014.47.15.png)
 
 14. Use mkfs.ext4 to format the logical volumes with [ext4](https://en.wikipedia.org/wiki/Ext4) filesystem
@@ -319,6 +320,7 @@ bind-address=<your webserver private ip address>
 
 ```
 like this image:
+
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-24%20at%2012.26.15.png)
 
 Restart mysql service
@@ -344,7 +346,7 @@ then, check the status again `sudo systemctl status mysqld`
 Lets test that we can connect from our Web Server to our DB server by using mysql-client
 
 `sudo mysql -u admin -p -h <DB-Server-Private-IP-address>`
-
+172.31.48.48
 Verify if you can successfully execute SHOW DATABASES; command and see a list of existing databases.
 
 locate and edit the wp-config.php
