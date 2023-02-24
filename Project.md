@@ -146,10 +146,85 @@ sudo systemctl daemon-reload
 
 ### Step 2 — Prepare the Database Server
 We will launch a second RedHat EC2 instance that will serve as – ‘DB Server’ Repeat the same steps as for the Web Server, but instead of `apps-lv`, we will create `db-lv` and mount it to `/db` directory instead of `/var/www/html/`.
+
 1. We will launch an EC2 instance that will serve as "DB Server". We will create 3 volumes in the same AZ as our Web Server EC2, each of 10 GiB and attach them to the instance.
 
 2. We will ssh into the instance to begin configuration
 
 3. We will use `lsblk` command to inspect what block devices are attached to the server. Notice names of our newly created devices. All devices in Linux reside in `/dev/` directory. We will inspect it with `ls /dev/` and make sure we see all 3 newly created block devices there – their names will likely be xvdf, xvdg, xvdh.
+
+4. `df -h` 
+
+5. We will use gdisk utility to create a single partition on each of the 3 disks. For example, for xvdf we will run the following: 
+`sudo gdisk /dev/xvdf`
+
+when promted for an input enter `n`, then press enter button 4 times for defualt settings. Afterward, enter `p` and press enter. Enter `w` and press enter and finally, enter `y` and press enter. The image below shows how we did it. We will repeat this step for xvdg and xvdh.
+
+6. Now, we will use `lsblk` utility to view the newly configured partition on each of the 3 disks.
+
+7. Install lvm2 package using `sudo yum install lvm2`. We will then run `sudo lvmdiskscan` command to check for available partitions
+8. We will use pvcreate utility to mark each of 3 disks as physical volumes (PVs) to be used by LVM by running the following:
+```
+sudo pvcreate /dev/xvdf1
+sudo pvcreate /dev/xvdg1
+sudo pvcreate /dev/xvdh1
+```
+9. We will verify that our Physical volume has been created successfully by running `sudo pvs`
+
+10. Use vgcreate utility to add all 3 PVs to a volume group (VG). We will mame the volume group "db-vg"
+
+`sudo vgcreate db-vg /dev/xvdh1 /dev/xvdg1 /dev/xvdf1`
+
+11. Verify that our VG has been created successfully by running `sudo vgs`
+
+12. We will use lvcreate utility to create 1 logical volume. `db-lv` (we will use 25g)
+
+``` 
+sudo lvcreate -n db-lv -L 25G db-vg
+
+```
+13. We will verify that our Logical Volume has been created successfully by running `sudo lvs`
+
+14. Verify the entire setup by running:
+
+```
+sudo vgdisplay -v #view complete setup - VG, PV, and LV
+sudo lsblk 
+```
+15. We will use mkfs.ext4 to format the logical volumes with ext4 filesystem
+
+``` 
+sudo mkfs -t ext4 /dev/db-vg/db-lv
+```
+16. Create a /db directory and mount it:
+
+```
+sudo mkdir /db
+sudo mount /dev/db-vg/db-lv /db
+df -h
+
+```
+17. We will update `/etc/fstab` file so that the mount configuration will persist after the restart of the server.
+The UUID of the device will be used to update the /etc/fstab file;
+`sudo blkid`
+![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-24%20at%2010.07.10.png)
+In the image above, the UUID value is highlighted.
+`sudo vi /etc/fstab`
+
+``` 
+# mount database
+UUID=1d162135-1feb-4e26-85be-38b47c04e196 /db  ext4 defaults 0 0
+
+```
+To edit, press i and to exit press esc and type :wq
+
+18. Test the configuration and reload the daemon
+```
+sudo mount -a 
+sudo systemctl daemon-reload
+```
+19. We will verify our setup by running `df -h`
+
+### Step 3 — Install WordPress on your Web Server EC2
 
 
