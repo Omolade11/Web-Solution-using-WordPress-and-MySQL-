@@ -226,5 +226,70 @@ sudo systemctl daemon-reload
 19. We will verify our setup by running `df -h`
 
 ### Step 3 — Install WordPress on your Web Server EC2
+1. Update the repository
 
+`sudo yum -y update`
 
+2. Install wget, Apache and it’s dependencies
+
+`sudo yum -y install wget httpd php php-mysqlnd php-fpm php-json`
+
+3. Start Apache
+
+```
+sudo systemctl enable httpd 
+sudo systemctl start httpd
+```
+
+4. To install PHP and its dependencies
+
+```
+sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+sudo yum install yum-utils http://rpms.remirepo.net/enterprise/remi-release-8.rpm
+sudo yum module list php
+sudo yum module reset php
+sudo yum module enable php:remi-7.4
+sudo yum install php php-opcache php-gd php-curl php-mysqlnd
+sudo systemctl start php-fpm
+sudo systemctl enable php-fpm
+sudo setsebool -P httpd_execmem 1
+```
+
+5. Restart Apache
+
+`sudo systemctl restart httpd`
+
+6. Download wordpress and copy wordpress to var/www/html
+```
+mkdir wordpress
+cd   wordpress
+sudo wget http://wordpress.org/latest.tar.gz
+sudo tar xzvf latest.tar.gz
+sudo rm -rf latest.tar.gz
+sudo cp wordpress/wp-config-sample.php wordpress/wp-config.php
+sudo cp -R wordpress /var/www/html/
+```
+
+6. Configure SELinux Policies
+```
+sudo chown -R apache:apache /var/www/html/wordpress
+sudo chcon -t httpd_sys_rw_content_t /var/www/html/wordpress -R
+sudo setsebool -P httpd_can_network_connect=1
+sudo setsebool -P httpd_can_network_connect_db 1
+```
+
+### Step 4 — Install MySQL on your DB Server EC2
+sudo yum update
+sudo yum install mysql-server
+Verify that the service is up and running by using sudo systemctl status mysqld, if it is not running, restart the service and enable it so it will be running even after reboot:
+sudo systemctl restart mysqld
+sudo systemctl enable mysqld
+
+### Step 5 — Configure DB to work with WordPress
+sudo mysql
+CREATE DATABASE wordpress;
+CREATE USER `myuser`@`<Web-Server-Private-IP-Address>` IDENTIFIED BY 'mypass';
+GRANT ALL ON wordpress.* TO 'myuser'@'<Web-Server-Private-IP-Address>';
+FLUSH PRIVILEGES;
+SHOW DATABASES;
+exit
