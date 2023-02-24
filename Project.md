@@ -279,17 +279,78 @@ sudo setsebool -P httpd_can_network_connect_db 1
 ```
 
 ### Step 4 — Install MySQL on your DB Server EC2
+```
 sudo yum update
 sudo yum install mysql-server
-Verify that the service is up and running by using sudo systemctl status mysqld, if it is not running, restart the service and enable it so it will be running even after reboot:
+```
+We will verify that the service is up and running by using 
+`sudo systemctl status mysqld`, if it is not running, restart the service and enable it so it will be running even after reboot:
+```
 sudo systemctl restart mysqld
 sudo systemctl enable mysqld
+```
+then, check the status again `sudo systemctl status mysqld`
+
+![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-24%20at%2012.22.25.png)
 
 ### Step 5 — Configure DB to work with WordPress
-sudo mysql
+
+In the database server terminal, we'll do mysql secure installation
+`sudo mysql_secure_installation`
+
+Now, we will run `sudo mysql` remember to add -p since you put a new password in the previous command.
+
+```
 CREATE DATABASE wordpress;
-CREATE USER `myuser`@`<Web-Server-Private-IP-Address>` IDENTIFIED BY 'mypass';
+CREATE USER 'myuser'@'<Web-Server-Private-IP-Address>' IDENTIFIED BY 'put your password';
 GRANT ALL ON wordpress.* TO 'myuser'@'<Web-Server-Private-IP-Address>';
 FLUSH PRIVILEGES;
 SHOW DATABASES;
 exit
+
+```
+
+Now, we will edit the bind address to have the webserver's private ip address.
+`sudo vi /etc/my.cnf`
+
+```
+[webserver]
+bind-address=<your webserver private ip address>
+
+```
+like this image:
+![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-24%20at%2012.26.15.png)
+
+Restart mysql service
+
+`sudo systemctl restart mysqld`
+
+
+### Step 6 — Install MySQL on the Web Server
+
+
+```
+sudo yum update 
+sudo yum install mysql-server
+```
+We will verify that the service is up and running by using 
+`sudo systemctl status mysqld`, if it is not running, restart the service and enable it so it will be running even after reboot:
+
+```
+sudo systemctl restart mysqld
+sudo systemctl enable mysqld
+```
+then, check the status again `sudo systemctl status mysqld`
+
+Lets test that we can connect from our Web Server to our DB server by using mysql-client
+
+`sudo mysql -u -p -h`
+
+Verify if you can successfully execute SHOW DATABASES; command and see a list of existing databases.
+
+locate and edit the wp-config.php
+cd /var/www/html/wordpress/ ls -l sudo vi wp-config.php
+
+
+
+
