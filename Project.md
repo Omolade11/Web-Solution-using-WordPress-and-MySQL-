@@ -10,6 +10,7 @@ This project consists of two parts:
 ## Three-tier Architecture
 Generally, web, or mobile solutions are implemented based on what is called the "Three-tier Architecture".
 Three-tier Architecture is a client-server software architecture pattern that comprise of 3 separate layers.
+
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/3tier%20app.webp)
 
 1. Presentation Layer (PL): This is the user interface such as the client server or browser on your laptop.
@@ -32,17 +33,28 @@ We'll be using RedHat OS for this project In previous projects we used `Ubuntu`,
 We can learn how to add EBS volume to an EC2 instance [here](https://www.youtube.com/watch?v=HPXnXkBzIHw).
 
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-22%20at%2023.24.47.png)
+
 Our instance was created in "us-east-1e" availability zone as we can see in the image below, afterward, we will click on `volumes` highlighted in orange under the elastic block store on the left.
+
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-22%20at%2023.49.55.png)
+
 Remember, we will be creating 3 volumes in the same AZ as our Web Server EC2 i.e us-east-1e each of 10 GiB.
 To do this, click on "Create volume"
+
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-22%20at%2023.51.30.png)
+
 Afterward, we will select the size as 10Gib and the availability zone to be the same as that of our web server.
+
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2000.18.27.png)
+
 Now, we will select our newly created volume in the list of created volumes and click on the "Actions" menu and afterward "Attach Volume"
+
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2000.25.38.png)
+
 After clicking on the above, it leads us to the page in the image below where we select the instance we want to attach the volume to and click on the "attach volume" icon button.
+
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2000.28.46.png)
+
 We will follow this process to create and attach two more volumes.
 
 2. We will ssh into the instance to begin configuration
@@ -59,9 +71,11 @@ when promted for an input enter `n`, then press enter button 4 times for defualt
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2013.15.37.png)
 
 5. Now, we will use `lsblk` utility to view the newly configured partition on each of the 3 disks.The image below is the result.
+
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2014.11.23.png)
 
 6. Install lvm2 package using `sudo yum install lvm2`. We will then run `sudo lvmdiskscan` command to check for available partitions
+
 7. We will use pvcreate utility to mark each of 3 disks as physical volumes (PVs) to be used by LVM by running the following:
 ```
 sudo pvcreate /dev/xvdf1
@@ -69,11 +83,13 @@ sudo pvcreate /dev/xvdg1
 sudo pvcreate /dev/xvdh1
 ```
 8. We will verify that our Physical volume has been created successfully by running `sudo pvs`
+
 9. Use vgcreate utility to add all 3 PVs to a volume group (VG). We will mame the volume group "webdata-vg"
 
 ` sudo vgcreate webdata-vg /dev/xvdh1 /dev/xvdg1 /dev/xvdf1 `
 
 10. Verify that our VG has been created successfully by running `sudo vgs`
+
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2014.25.03.png)
 
 11. We will use lvcreate utility to create 2 logical volumes. `apps-lv` (Use half of the PV size), and `logs-lv` (Use the remaining space of the PV(Physical Volume) size). NOTE: apps-lv will be used to store data for the Website while, logs-lv will be used to store data for logs.
@@ -121,7 +137,9 @@ important)
 21. We will update `/etc/fstab` file so that the mount configuration will persist after the restart of the server.
 The UUID of the device will be used to update the /etc/fstab file;
 `sudo blkid`
+
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2015.19.11.png)
+
 From the image above, the UUID value of vg-apps and vg-logs can be seen.
 `sudo vi /etc/fstab`
 
@@ -143,6 +161,7 @@ sudo systemctl daemon-reload
 ```
 
 23. We will verify our setup by running `df -h` the output must look like this: 
+
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-23%20at%2016.27.02.png)
 
 ### Step 2 — Prepare the Database Server
@@ -208,7 +227,9 @@ df -h
 17. We will update `/etc/fstab` file so that the mount configuration will persist after the restart of the server.
 The UUID of the device will be used to update the /etc/fstab file;
 `sudo blkid`
+
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-24%20at%2010.07.10.png)
+
 In the image above, the UUID value is highlighted.
 `sudo vi /etc/fstab`
 
@@ -328,9 +349,14 @@ Restart mysql service
 `sudo systemctl restart mysqld`
 
 ### Step 6 - Setting up Security Group
+
 We will open MySQL on port 3306 on DB Server EC2. For extra security, we will allow access to the DB server ONLY from our Web Server’s IP address, so in the Inbound Rule configuration specify source as /32.
 
 ![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-24%20at%2023.39.36.png)
+
+Enable TCP port 80 in Inbound Rules configuration for our Web Server EC2 (enable from everywhere 0.0.0.0/0 or from our workstation’s IP)
+
+![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-24%20at%2023.49.09.png)
 
 
 ### Step 7 — Install MySQL on the Web Server
@@ -339,7 +365,8 @@ We will open MySQL on port 3306 on DB Server EC2. For extra security, we will al
 sudo yum update 
 sudo yum install mysql-server
 ```
-We will verify that the service is up and running by using 
+We will verify that the service is up and running by using
+
 `sudo systemctl status mysqld`, if it is not running, restart the service and enable it so it will be running even after reboot:
 
 ```
@@ -348,7 +375,7 @@ sudo systemctl enable mysqld
 ```
 then, check the status again `sudo systemctl status mysqld`
 
-Lets test that we can connect from our Web Server to our DB server by using mysql-client
+Let's test that we can connect from our Web Server to our DB server by using mysql-client
 
 `sudo mysql -u <your db user name> -p -h <DB-Server-Private-IP-address>`
 
@@ -375,5 +402,12 @@ sudo systemctl status httpd
 
 ```
 
+We will try to access our browser the link to our WordPress:
+
+`http://<Web-Server-Public-IP-Address>/wordpress/`
+
+Fill out the required credentials and click on install wordpress. Login and finally take a deep breath and enjoy the beautiful view of the wordpress page you see. 
+
+![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-25%20at%2000.02.48.png)
 
 
