@@ -328,7 +328,6 @@ Restart mysql service
 
 ### Step 6 — Install MySQL on the Web Server
 
-
 ```
 sudo yum update 
 sudo yum install mysql-server
@@ -344,7 +343,7 @@ then, check the status again `sudo systemctl status mysqld`
 
 Lets test that we can connect from our Web Server to our DB server by using mysql-client
 
-`sudo mysql -u -p -h`
+`sudo mysql -u admin -p -h <DB-Server-Private-IP-address>`
 
 Verify if you can successfully execute SHOW DATABASES; command and see a list of existing databases.
 
