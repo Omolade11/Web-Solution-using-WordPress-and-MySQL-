@@ -327,8 +327,13 @@ Restart mysql service
 
 `sudo systemctl restart mysqld`
 
+### Step 6 - Setting up Security Group
+We will open MySQL on port 3306 on DB Server EC2. For extra security, we will allow access to the DB server ONLY from our Web Server’s IP address, so in the Inbound Rule configuration specify source as /32.
 
-### Step 6 — Install MySQL on the Web Server
+![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-24%20at%2023.39.36.png)
+
+
+### Step 7 — Install MySQL on the Web Server
 
 ```
 sudo yum update 
@@ -354,10 +359,21 @@ Now, we will locate and edit the `wp-config.php`
 cd /var/www/html/wordpress/ 
 ls -l 
 sudo vi wp-config.php
-```
-![]()
 
-To disable the default apache homepage,
+```
+Edit the wp-config.php file to contain details about the remote db i.e database_name, database_user, database_password and database_host (private ip of database server in this case)
+
+![](https://github.com/Omolade11/Web-Solution-using-WordPress-and-MySQL-/blob/main/Images/Screenshot%202023-02-24%20at%2023.17.49.png)
+
+To disable the default apache homepage
+
+`sudo mv /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/welcome.conf_backup`
+
+```
+sudo systemctl restart httpd 
+sudo systemctl status httpd
+
+```
 
 
 
