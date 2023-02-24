@@ -345,13 +345,19 @@ then, check the status again `sudo systemctl status mysqld`
 
 Lets test that we can connect from our Web Server to our DB server by using mysql-client
 
-`sudo mysql -u admin -p -h <DB-Server-Private-IP-address>`
-172.31.48.48
-Verify if you can successfully execute SHOW DATABASES; command and see a list of existing databases.
+`sudo mysql -u <your db user name> -p -h <DB-Server-Private-IP-address>`
 
-locate and edit the wp-config.php
-cd /var/www/html/wordpress/ ls -l sudo vi wp-config.php
+Verify if we can successfully execute `SHOW DATABASES;` command and see a list of existing databases.
 
+Now, we will locate and edit the `wp-config.php`
+```
+cd /var/www/html/wordpress/ 
+ls -l 
+sudo vi wp-config.php
+```
+![]()
+
+To disable the default apache homepage,
 
 
 
